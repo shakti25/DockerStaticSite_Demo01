@@ -17,15 +17,15 @@ jobs:
 
             - name: Build Docker Image
               run: |
-                docker build --platform linux --tag rtoora/demos-repository:latest .
+                docker build --platform linux --tag rtoora/demos-repository:${{ github.sha }} .
 
             - name: Push to DockerHub
               run: |
-                docker push rtoora/demos-repository:latest
+                docker push rtoora/demos-repository:${{ github.sha }}
 
             - name: App Service Auth
               uses: azure/webapps-deploy@v2
               with:
                 app-name: 'docker-demo-site'
                 publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-                images: 'rtoora/demos-repository:latest'
+                images: 'rtoora/demos-repository:${{ github.sha }}'
